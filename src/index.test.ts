@@ -4,6 +4,7 @@ import { GraphQLServer, Options } from './index'
 import { promisify } from 'util'
 import { middleware } from 'graphql-middleware'
 import * as request from 'request-promise-native'
+import { AddressInfo } from 'net';
 
 async function startServer(t: TestContext & Context<any>, options?: Options) {
   const randomId = () =>
@@ -51,7 +52,7 @@ async function startServer(t: TestContext & Context<any>, options?: Options) {
 
   const server = new GraphQLServer({ typeDefs, resolvers })
   const http = await server.start({ port: 0, ...options })
-  const { port } = http.address()
+  const { port } = http.address() as AddressInfo
   const uri = `http://localhost:${port}/`
 
   if (t.context.httpServers) {
@@ -233,7 +234,7 @@ test('Works with graphql-middleware', async t => {
     middlewares: [middleware],
   })
   const http = await server.start({ port: 0 })
-  const { port } = http.address()
+  const { port } = http.address() as AddressInfo
   const uri = `http://localhost:${port}/`
 
   const query = `
@@ -299,7 +300,7 @@ test('Works with graphql-middleware generator.', async t => {
     middlewares: [middlewareGenerator],
   })
   const http = await server.start({ port: 0 })
-  const { port } = http.address()
+  const { port } = http.address() as AddressInfo
   const uri = `http://localhost:${port}/`
 
   const query = `

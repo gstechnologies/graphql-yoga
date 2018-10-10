@@ -45,6 +45,7 @@ import {
 } from './types'
 import { ITypeDefinitions } from 'graphql-tools/dist/Interfaces'
 import { defaultErrorFormatter } from './defaultErrorFormatter'
+import { AddressInfo } from 'net'
 
 export { MockList } from 'graphql-tools'
 export { PubSub, withFilter } from 'graphql-subscriptions'
@@ -383,7 +384,7 @@ export class GraphQLServer {
         () => {
           callbackFunc({
             ...this.options,
-            port: combinedServer.address().port,
+            port: (combinedServer.address() as AddressInfo).port,
           })
           resolve(combinedServer)
         },
